@@ -2,24 +2,24 @@
 // zine maker for Processing Community Day 2019
 
 import java.io.File;
-import java.io.FilenameFilter;
+//import java.io.FilenameFilter;
 
 
-static final FilenameFilter pictFilter = new FilenameFilter() {
-  final String[] exts = {
-    ".jpg", ".png"
-  };
+//static final FilenameFilter pictFilter = new FilenameFilter() {
+//  final String[] exts = {
+//    ".jpg", ".png"
+//  };
 
-  @ Override boolean accept(final File dir, String name) {
-    name = name.toLowerCase();
-    for (final String ext : exts)  if (name.endsWith(ext))  return true;
-    return false;
-  }
-};
+//  @ Override boolean accept(final File dir, String name) {
+//    name = name.toLowerCase();
+//    for (final String ext : exts)  if (name.endsWith(ext))  return true;
+//    return false;
+//  }
+//};
 
-protected static final File[] getFolderContent(final File dir) {
-  return dir.listFiles(pictFilter);  //
-}
+//protected static final File[] getFolderContent(final File dir) {
+//  return dir.listFiles(pictFilter);  //
+//}
 
 import processing.pdf.*;
 PGraphicsPDF pdf;
@@ -63,13 +63,16 @@ void draw() {
 
   // TOC
   int stop = margin*3;
+  int pageCounter = 4;
   for (int i = 0; i < filenames.length; i++) {
     PImage img = loadImage(filenames[i]);
 
     if (img != null) { 
       fill(0);
-      text(filenames[i], margin, stop);
+      String tocEntry = filenames[i] + "........." + pageCounter;
+      text(tocEntry, margin, stop);
       stop +=margin;
+      pageCounter+=1;
     }
   }
   pdf = (PGraphicsPDF) g;  // Get the renderer
@@ -109,6 +112,12 @@ void draw() {
       pdf = (PGraphicsPDF) g;  // Get the renderer
       pdf.nextPage();
     }
+  }
+  int add = 4-(pageCounter%4); 
+  println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
+
+
+    
   }
 
   // WHITE PAGES
