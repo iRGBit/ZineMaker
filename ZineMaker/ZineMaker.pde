@@ -64,8 +64,13 @@ void draw() {
   // TOC
   int stop = margin*3;
   for (int i = 0; i < filenames.length; i++) {
-    text(filenames[i], margin, stop);
-    stop +=margin;
+    PImage img = loadImage(filenames[i]);
+
+    if (img != null) { 
+      fill(0);
+      text(filenames[i], margin, stop);
+      stop +=margin;
+    }
   }
   pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
@@ -84,25 +89,26 @@ void draw() {
         println("Landscape");
         if (img.width >= pdfwidth-margin*2) {
           img.resize(pdfwidth-margin*2, 0);
-          image(img, margin, margin*4);
         }
+        image(img, margin, margin*4);
       } else if (img.width < img.height) { // portrait
         println("Portrait");
         if (img.height >= pdfheight-margin*2) {
           img.resize(0, pdfheight-margin*2);
-          image(img, margin, margin);
         }
+        image(img, margin, margin);
       } else { // square
         println("Square");
         if (img.height > pdfheight) {
           img.resize(0, pdfheight-margin*2);
-          image(img, margin, margin);
         }
+        image(img, margin, margin);
       }
-    }
 
-    pdf = (PGraphicsPDF) g;  // Get the renderer
-    pdf.nextPage();
+
+      pdf = (PGraphicsPDF) g;  // Get the renderer
+      pdf.nextPage();
+    }
   }
 
   // WHITE PAGES
