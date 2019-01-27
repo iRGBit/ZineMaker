@@ -47,7 +47,7 @@ void draw() {
   //imageMode(CENTER);
 
   // COVER PAGE
-  fill(#F80A2B);
+  fill(random(255), random(255), random(255)); // to be replaced 
   rect(0, 0, width, height);
   fill(0);
   text("ZINE", width/2, height/2);
