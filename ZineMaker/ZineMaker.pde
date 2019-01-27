@@ -117,8 +117,6 @@ void draw() {
   println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
 
 
-    
-  }
 
   // WHITE PAGES
 
