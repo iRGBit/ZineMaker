@@ -2,8 +2,28 @@
 // zine maker for Processing Community Day 2019
 
 import java.io.File;
+import java.io.FilenameFilter;
+
+
+static final FilenameFilter pictFilter = new FilenameFilter() {
+  final String[] exts = {
+    ".jpg", ".png"
+  };
+
+  @ Override boolean accept(final File dir, String name) {
+    name = name.toLowerCase();
+    for (final String ext : exts)  if (name.endsWith(ext))  return true;
+    return false;
+  }
+};
+
+protected static final File[] getFolderContent(final File dir) {
+  return dir.listFiles(pictFilter);  //
+}
+
 import processing.pdf.*;
 PGraphicsPDF pdf;
+
 int pdfwidth = 600;
 int pdfheight = 800;
 int margin = 20;
@@ -42,7 +62,11 @@ void draw() {
   pdf.nextPage();
 
   // TOC
-
+  int stop = margin*3;
+  for (int i = 0; i < filenames.length; i++) {
+    text(filenames[i], margin, stop);
+    stop +=margin;
+  }
   pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
@@ -52,25 +76,28 @@ void draw() {
     fill(255);
     rect(0, 0, width, height);
     PImage img = loadImage(filenames[i]);
-    println(filenames[i], " ", img.width, " ", img.height);
 
-    if (img.width > img.height) { // landscape
-      println("Landscape");
-      if (img.width >= pdfwidth-margin*2) {
-        img.resize(pdfwidth-margin*2, 0);
-        image(img, margin, margin*4);
-      }
-    } else if (img.width < img.height) { // portrait
-      println("Portrait");
-      if (img.height >= pdfheight-margin*2) {
-        img.resize(0, pdfheight-margin*2);
-        image(img, margin, margin);
-      }
-    } else { // square
-      println("Square");
-      if (img.height > pdfheight) {
-        img.resize(0, pdfheight-margin*2);
-        image(img, margin, margin);
+    if (img != null) { // check if loaded file is an image
+      println(filenames[i], " ", img.width, " ", img.height);
+
+      if (img.width > img.height) { // landscape
+        println("Landscape");
+        if (img.width >= pdfwidth-margin*2) {
+          img.resize(pdfwidth-margin*2, 0);
+          image(img, margin, margin*4);
+        }
+      } else if (img.width < img.height) { // portrait
+        println("Portrait");
+        if (img.height >= pdfheight-margin*2) {
+          img.resize(0, pdfheight-margin*2);
+          image(img, margin, margin);
+        }
+      } else { // square
+        println("Square");
+        if (img.height > pdfheight) {
+          img.resize(0, pdfheight-margin*2);
+          image(img, margin, margin);
+        }
       }
     }
 
