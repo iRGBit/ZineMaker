@@ -25,7 +25,7 @@ void setup() {
         println(items[i]);
       }
 
-      if (items.length != 4) {
+      if (items.length != 5) {
         fill(#FF0000);
         text("Wrong file name.", 20, 20);
         text("Should be something like:", 20, 40);
@@ -37,14 +37,17 @@ void setup() {
         String timestamp = "Timestamp: " + items[0];
         String location = "Location: " + items[2];
         String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
-        url = url.substring(0, url.lastIndexOf('.'));
+        //url = url.substring(0, url.lastIndexOf('.'));
+        String instruction = items[4];
+        instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
 
         text(name, 20, 20);
         text(timestamp, 20, 40);
         text(url, 20, 60);
         text(location, 20, 80);
+        text(instruction, 20, 100);
         img.resize(width-40, 0);
-        image(img, 20, 90);
+        image(img, 20, 120);
 
       }
     }
