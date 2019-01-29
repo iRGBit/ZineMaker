@@ -113,12 +113,19 @@ void draw() {
       pdf.nextPage();
     }
   }
-  int add = 4-(pageCounter%4); 
-  println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
+
 
 
 
   // WHITE PAGES
+  int add = 4-(pageCounter%4); 
+  for (int i=0; i<add; i++) {
+    fill(255);
+    rect(0, 0, width, height);
+    pdf = (PGraphicsPDF) g;  // Get the renderer
+    pdf.nextPage();
+  }
+  println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
 
   // LAST PAGE
   rect(100, 100, pdfwidth/2, pdfheight/2);
