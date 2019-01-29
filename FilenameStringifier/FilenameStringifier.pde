@@ -43,6 +43,8 @@ void setup() {
         text(timestamp, 20, 40);
         text(url, 20, 60);
         text(location, 20, 80);
+        img.resize(width-40, 0);
+        image(img, 20, 90);
 
       }
     }
