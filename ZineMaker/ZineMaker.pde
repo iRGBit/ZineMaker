@@ -2,24 +2,7 @@
 // zine maker for Processing Community Day 2019
 
 import java.io.File;
-//import java.io.FilenameFilter;
 
-
-//static final FilenameFilter pictFilter = new FilenameFilter() {
-//  final String[] exts = {
-//    ".jpg", ".png"
-//  };
-
-//  @ Override boolean accept(final File dir, String name) {
-//    name = name.toLowerCase();
-//    for (final String ext : exts)  if (name.endsWith(ext))  return true;
-//    return false;
-//  }
-//};
-
-//protected static final File[] getFolderContent(final File dir) {
-//  return dir.listFiles(pictFilter);  //
-//}
 
 import processing.pdf.*;
 PGraphicsPDF pdf;
