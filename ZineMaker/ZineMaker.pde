@@ -111,7 +111,6 @@ void draw() {
       String timestamp = "Timestamp: " + items[0];
       String location = "Location: " + items[2];
       String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
-      //url = url.substring(0, url.lastIndexOf('.'));
       String instruction = items[4];
       instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
 
@@ -155,13 +154,17 @@ void draw() {
     pdf = (PGraphicsPDF) g;  // Get the renderer
     pdf.nextPage();
   }
-  println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
+  println("Your zine has " + pageCounter + " pages." + add + " blank pages added.");
 
   // LAST PAGE
   String credits = "With contributions from: ";
   //println(contributors);
   for (int c=0; c<contributors.length; c++) {
-    credits = credits + contributors[c] + " | ";
+    if (c==contributors.length-1) {
+      credits = credits + contributors[c];
+    } else {
+      credits = credits + contributors[c] + " | ";
+    }
   }
 
   fill(0);
@@ -169,8 +172,8 @@ void draw() {
 
   fill(255);
   text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
-  
-  
+
+
   text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
   println("Your zine is ready. Thank you for your patience.");
   exit();
