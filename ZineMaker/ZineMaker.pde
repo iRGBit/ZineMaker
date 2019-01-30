@@ -27,8 +27,6 @@ void draw() {
   String[] filenames  = folder.list();  // get and display the number of jpg files
   println(filenames.length + " files in specified directory");
 
-  //imageMode(CENTER);
-
   // COVER PAGE
   fill(random(255), random(255), random(255)); // to be replaced 
   rect(0, 0, width, height);
@@ -52,7 +50,9 @@ void draw() {
 
     if (img != null) { 
       fill(0);
-      String tocEntry = filenames[i] + "........." + pageCounter;
+      String filename = filenames[i];
+      String[] items = split(filename, "|");
+      String tocEntry = items[1] + "........." + pageCounter;
       text(tocEntry, margin, stop);
       stop +=margin;
       pageCounter+=1;
@@ -63,14 +63,31 @@ void draw() {
 
 
   // CONTENT
+  println("I will loop " + filenames.length + " times.");
   for (int i = 0; i < filenames.length; i++) {
-    fill(255);
-    rect(0, 0, width, height);
+
     PImage img = loadImage(filenames[i]);
 
     if (img != null) { // check if loaded file is an image
-      println(filenames[i], " ", img.width, " ", img.height);
+      String filename = filenames[i];
+      String[] items = split(filename, "|");
 
+      println("Working on " + items[1] + "'s image which is number " + i);
+
+      String name = "Name: " + items[1];
+      String timestamp = "Timestamp: " + items[0];
+      String location = "Location: " + items[2];
+      String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
+      //url = url.substring(0, url.lastIndexOf('.'));
+      String instruction = items[4];
+      instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
+      
+      fill(0);
+      text(name, 20, pdfheight-100);
+      text(url, 20, pdfheight-80);
+      text(location, 20, pdfheight-60);
+      text(instruction, 20, pdfheight-40);
+      
       if (img.width > img.height) { // landscape
         println("Landscape");
         if (img.width >= pdfwidth-margin*2) {
@@ -90,11 +107,9 @@ void draw() {
         }
         image(img, margin, margin);
       }
-
-
-      pdf = (PGraphicsPDF) g;  // Get the renderer
-      pdf.nextPage();
     }
+    pdf = (PGraphicsPDF) g;  // Get the renderer
+    pdf.nextPage();
   }
 
 
@@ -111,9 +126,8 @@ void draw() {
   println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
 
   // LAST PAGE
-  rect(100, 100, pdfwidth/2, pdfheight/2);
   fill(0);
-  text(str(day())+"-"+str(month())+str(year())+"_"+str(hour())+":"+str(minute())+":"+str(second()), 10, 90); 
-
+  text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute())+":", 20, pdfheight-10); 
+  println("Your zine is ready. Thank you for your patience.");
   exit();
 }
