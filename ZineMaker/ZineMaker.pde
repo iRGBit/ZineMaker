@@ -65,7 +65,7 @@ void draw() {
       fill(0);
       String filename = filenames[i];
       String[] items = split(filename, "|");
-      String tocEntry = items[1] +"   page "+ pageCounter;
+      String tocEntry = items[1] +", #" + items[4].substring(0, items[4].lastIndexOf('.')) +"   page "+ pageCounter;
       text(tocEntry, margin, stop);
       stop +=margin;
       pageCounter+=1;
