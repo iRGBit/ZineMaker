@@ -11,6 +11,8 @@ int pdfwidth = 600;
 int pdfheight = 800;
 int margin = 20;
 
+String[] contributors = {};
+
 
 void setup() 
 {
@@ -31,6 +33,8 @@ void draw() {
   fill(random(255), random(255), random(255)); // to be replaced 
   rect(0, 0, width, height);
   fill(0);
+  textSize(66);
+  textAlign(CENTER);
   text("ZINE", width/2, height/2);
 
   PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the renderer
@@ -44,7 +48,14 @@ void draw() {
 
   // TOC
   fill(0);
+  textSize(18);
+  textAlign(LEFT);
   text("Table of Contents", 20, margin*2);
+  textSize(12);
+
+  boolean newcontributor = false;
+
+
   int stop = margin*4;
   int pageCounter = 4;
   for (int i = 0; i < filenames.length; i++) {
@@ -54,12 +65,32 @@ void draw() {
       fill(0);
       String filename = filenames[i];
       String[] items = split(filename, "|");
-      String tocEntry = items[1] + "........." + pageCounter;
+      String tocEntry = items[1] +"   page "+ pageCounter;
       text(tocEntry, margin, stop);
       stop +=margin;
       pageCounter+=1;
+      if (contributors.length == 0) {
+        newcontributor = true;
+      } else {
+        for (int j = 0; j<contributors.length; j++) {
+          if (contributors[j].equals(items[1])) {
+            newcontributor = false;
+            println(items[1] + " is " + contributors[j]);
+          } else {
+            newcontributor = true;
+            println(items[1] + " is not " + contributors[j]);
+          }
+        }
+      }
+
+      if (newcontributor==true) {
+        contributors = append(contributors, items[1]);
+      }
     }
   }
+
+
+
   pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
@@ -83,13 +114,13 @@ void draw() {
       //url = url.substring(0, url.lastIndexOf('.'));
       String instruction = items[4];
       instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
-      
+
       fill(0);
       text(name, 20, pdfheight-100);
       text(url, 20, pdfheight-80);
       text(location, 20, pdfheight-60);
       text(instruction, 20, pdfheight-40);
-      
+
       if (img.width > img.height) { // landscape
         println("Landscape");
         if (img.width >= pdfwidth-margin*2) {
@@ -127,9 +158,19 @@ void draw() {
   println("Your zine has  " + pageCounter + " pages." + add + " blank pages added.");
 
   // LAST PAGE
+  String credits = "With contributions from: ";
+  //println(contributors);
+  for (int c=0; c<contributors.length; c++) {
+    credits = credits + contributors[c] + " | ";
+  }
+
   fill(0);
-  rect(margin,margin,pdfwidth-margin*2,pdfheight-margin*2);
+  rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
+
   fill(255);
+  text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
+  
+  
   text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
   println("Your zine is ready. Thank you for your patience.");
   exit();
