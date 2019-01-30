@@ -43,7 +43,9 @@ void draw() {
   pdf.nextPage();
 
   // TOC
-  int stop = margin*3;
+  fill(0);
+  text("Table of Contents", 20, margin*2);
+  int stop = margin*4;
   int pageCounter = 4;
   for (int i = 0; i < filenames.length; i++) {
     PImage img = loadImage(filenames[i]);
@@ -114,7 +116,6 @@ void draw() {
 
 
 
-
   // WHITE PAGES
   int add = 4-(pageCounter%4); 
   for (int i=0; i<add; i++) {
@@ -127,7 +128,9 @@ void draw() {
 
   // LAST PAGE
   fill(0);
-  text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute())+":", 20, pdfheight-10); 
+  rect(margin,margin,pdfwidth-margin*2,pdfheight-margin*2);
+  fill(255);
+  text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
   println("Your zine is ready. Thank you for your patience.");
   exit();
 }
