@@ -25,7 +25,7 @@ void setup()
   background(255);
   Header = createFont("Silkscreen", 32);
   Txt = createFont("Silkscreen", 16);
-  URL = createFont("Consolas", 12);
+  URL = createFont("Courier", 12);
 }
 
 void draw() {
@@ -37,7 +37,7 @@ void draw() {
   String[] filenames  = folder.list();  // get and display the number of jpg files
   println(filenames.length + " files in specified directory");
 
-  // COVER PAGE
+  // ========================================== COVER PAGE ==========================================
   fill(random(255), random(255), random(255)); // to be replaced 
   rect(0, 0, width, height);
   fill(0);
@@ -49,22 +49,29 @@ void draw() {
   PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
-  // WHITE PAGE
+  // ========================================== IMPRESSUM ==========================================
   fill(#FFFFFF);
   rect(0, 0, width, height);
+  textAlign(LEFT);
+  textFont(Txt);
+  fill(0);
+  //rect(width*.5, height-margin*6, width*.5-margin, margin*5);
+  text("Curated by: Birgit Bachler (Wellington), Melanie Huang (Melbourne), David Harris (Brisbane)", width*.5, height-margin*4, width*.5-margin, margin*5);
+  textAlign(LEFT);
+
   pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
-  // TOC
+
+  // ========================================== TOC ========================================== 
   fill(0);
   textSize(18);
   textAlign(LEFT);
   textFont(Header);
-  text("Table of Contents", 20, margin*2);
+  text("Table of Contents", 20, margin*3);
   textFont(Txt);
 
   boolean newcontributor = false;
-
 
   int stop = margin*4;
   int pageCounter = 4;
@@ -77,7 +84,7 @@ void draw() {
       String[] items = split(filename, "|");
       String tocEntry = items[1] +", #" + items[4].substring(0, items[4].lastIndexOf('.')) +"   page "+ pageCounter;
       text(tocEntry, margin, stop);
-      stop +=margin;
+      stop +=18;
       pageCounter+=1;
       if (contributors.length == 0) {
         newcontributor = true;
@@ -105,7 +112,7 @@ void draw() {
   pdf.nextPage();
 
 
-  // CONTENT
+  // ========================================== CONTENT ==========================================
   println("I will loop " + filenames.length + " times.");
   for (int i = 0; i < filenames.length; i++) {
 
@@ -128,10 +135,10 @@ void draw() {
       fill(0);
       textFont(Txt);
       text(name, margin, pdfheight-100);
-      text(location, margin, pdfheight-60);
-      text(instruction, margin, pdfheight-40);
+      text(location, margin, pdfheight-80);
+      text(instruction, margin, pdfheight-60);
       textFont(URL);
-      text(url, margin, pdfheight-80);
+      text(url, margin, pdfheight-40);
 
 
 
@@ -161,7 +168,7 @@ void draw() {
 
 
 
-  // WHITE PAGES
+  // ========================================== WHITE PAGES ==========================================
   int add = 4-(pageCounter%4); 
   for (int i=0; i<add; i++) {
     fill(255);
@@ -186,8 +193,9 @@ void draw() {
   rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
 
   fill(255);
-  text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
+  textFont(Txt);
 
+  text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
 
   text("Generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
   println("Your zine is ready. Thank you for your patience.");
