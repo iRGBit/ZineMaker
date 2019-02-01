@@ -3,13 +3,18 @@
 
 import java.io.File;
 
+PFont Header;
+PFont Txt;
+PFont URL;
+
+
 
 import processing.pdf.*;
 PGraphicsPDF pdf;
 
 int pdfwidth = 600;
 int pdfheight = 800;
-int margin = 20;
+int margin = 40;
 
 String[] contributors = {};
 
@@ -18,6 +23,9 @@ void setup()
 {
   size(600, 800, PDF, "zine.pdf");
   background(255);
+  Header = createFont("Silkscreen", 32);
+  Txt = createFont("Silkscreen", 16);
+  URL = createFont("Consolas", 12);
 }
 
 void draw() {
@@ -35,6 +43,7 @@ void draw() {
   fill(0);
   textSize(66);
   textAlign(CENTER);
+  textFont(Header);
   text("ZINE", width/2, height/2);
 
   PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the renderer
@@ -50,8 +59,9 @@ void draw() {
   fill(0);
   textSize(18);
   textAlign(LEFT);
+  textFont(Header);
   text("Table of Contents", 20, margin*2);
-  textSize(12);
+  textFont(Txt);
 
   boolean newcontributor = false;
 
@@ -99,6 +109,7 @@ void draw() {
   println("I will loop " + filenames.length + " times.");
   for (int i = 0; i < filenames.length; i++) {
 
+
     PImage img = loadImage(filenames[i]);
 
     if (img != null) { // check if loaded file is an image
@@ -108,17 +119,21 @@ void draw() {
       println("Working on " + items[1] + "'s image which is number " + i);
 
       String name = "Name: " + items[1];
-      String timestamp = "Timestamp: " + items[0];
+      //String timestamp = "Timestamp: " + items[0];
       String location = "Location: " + items[2];
       String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
       String instruction = items[4];
       instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
 
       fill(0);
-      text(name, 20, pdfheight-100);
-      text(url, 20, pdfheight-80);
-      text(location, 20, pdfheight-60);
-      text(instruction, 20, pdfheight-40);
+      textFont(Txt);
+      text(name, margin, pdfheight-100);
+      text(location, margin, pdfheight-60);
+      text(instruction, margin, pdfheight-40);
+      textFont(URL);
+      text(url, margin, pdfheight-80);
+
+
 
       if (img.width > img.height) { // landscape
         println("Landscape");
@@ -139,9 +154,9 @@ void draw() {
         }
         image(img, margin, margin);
       }
+      pdf = (PGraphicsPDF) g;  // Get the renderer
+      pdf.nextPage();
     }
-    pdf = (PGraphicsPDF) g;  // Get the renderer
-    pdf.nextPage();
   }
 
 
