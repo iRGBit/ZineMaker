@@ -1,22 +1,22 @@
 /*
        .__                              __                 
-_______|__| ____   ____   _____ _____  |  | __ ___________ 
-\___   /  |/    \_/ __ \ /     \\__  \ |  |/ // __ \_  __ \
+ _______|__| ____   ____   _____ _____  |  | __ ___________ 
+ \___   /  |/    \_/ __ \ /     \\__  \ |  |/ // __ \_  __ \
  /    /|  |   |  \  ___/|  Y Y  \/ __ \|    <\  ___/|  | \/
-/_____ \__|___|  /\___  >__|_|  (____  /__|_ \\___  >__|   
-      \/       \/     \/      \/     \/     \/    \/       
-
+ /_____ \__|___|  /\___  >__|_|  (____  /__|_ \\___  >__|   
+ \/       \/     \/      \/     \/     \/    \/       
+ 
  2019 Birgit Bachler
-http://irgbit.github.com/ZineMaker  
-ZineMaker for Processing Community Day Wellington/Brisbane/Melbourne 2019
-GNU GENERAL PUBLIC LICENSE v3.0  
-*/
+ http://irgbit.github.com/ZineMaker  
+ ZineMaker for Processing Community Day Wellington/Brisbane/Melbourne 2019
+ GNU GENERAL PUBLIC LICENSE v3.0  
+ */
 
 import java.io.File;
 
 PFont Header;
 PFont Txt;
-PFont URL;
+PFont mono;
 
 PShape coverdesign;
 
@@ -37,7 +37,7 @@ void setup()
   background(255);
   Header = createFont("Silkscreen", 32);
   Txt = createFont("Silkscreen", 16);
-  URL = createFont("Courier", 12);
+  mono = createFont("Courier", 12);
 }
 
 void draw() {
@@ -89,7 +89,7 @@ void draw() {
   textAlign(LEFT);
   textFont(Header);
   text("Table of Contents", 20, margin*3);
-  textFont(Txt);
+  textFont(mono);
 
   boolean newcontributor = false;
 
@@ -160,7 +160,7 @@ void draw() {
         text(name, margin, pdfheight-100);
         text(location, margin, pdfheight-80);
         text(instruction, margin, pdfheight-60);
-        textFont(URL);
+        textFont(mono);
         text(url, margin, pdfheight-40);
 
 
@@ -173,9 +173,10 @@ void draw() {
           image(img, margin, margin*4);
         } else if (img.width < img.height) { // portrait
           println("Portrait");
-          if (img.height >= pdfheight-margin*2) {
-            img.resize(0, pdfheight-margin*2);
+          if (img.width >= pdfwidth-margin*2) {
+            img.resize(pdfwidth-margin*2, 0);
           }
+
           image(img, margin, margin);
         } else { // square
           println("Square");
