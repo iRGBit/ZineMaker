@@ -1,5 +1,16 @@
-// 2019 Birgit Bachler
-// zine maker for Processing Community Day 2019
+/*
+       .__                              __                 
+_______|__| ____   ____   _____ _____  |  | __ ___________ 
+\___   /  |/    \_/ __ \ /     \\__  \ |  |/ // __ \_  __ \
+ /    /|  |   |  \  ___/|  Y Y  \/ __ \|    <\  ___/|  | \/
+/_____ \__|___|  /\___  >__|_|  (____  /__|_ \\___  >__|   
+      \/       \/     \/      \/     \/     \/    \/       
+
+ 2019 Birgit Bachler
+http://irgbit.github.com/ZineMaker  
+ZineMaker for Processing Community Day Wellington/Brisbane/Melbourne 2019
+GNU GENERAL PUBLIC LICENSE v3.0  
+*/
 
 import java.io.File;
 
@@ -189,7 +200,7 @@ void draw() {
     pdf = (PGraphicsPDF) g;  // Get the renderer
     pdf.nextPage();
   }
-  println("Your zine has " + pageCounter + " pages." + add + " blank pages added.");
+  println("Your zine has " + pageCounter + " pages. " + add + " blank pages added for double-sided printing.");
 
   // LAST PAGE
   String credits = "With contributions from: ";
@@ -212,6 +223,15 @@ void draw() {
 
   text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
   text("MYO with https://github.com/iRGBit/ZineMaker", margin*2, pdfheight-margin);
+
+  // ========================================== BYE ==========================================
+
+  String[] yay = {"Yay!", "Hooray", "Weeeee", "Tau Ke!", "You know what?", "Woo Hoo", "Ka mau te wehi!"};
+  String[] goodbye = {"Bye!", "See ya!", "Laters!", "Haere Ra!", "Over and out"};
+
+  println(yay[int(random(yay.length))]);
   println("Your zine is ready. Thank you for your patience.");
+  println(goodbye[int(random(goodbye.length))]);
+
   exit();
 }
