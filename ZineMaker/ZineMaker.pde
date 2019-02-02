@@ -195,19 +195,6 @@ void draw() {
   }
 
 
-  // ========================================== INSTRUCTIONS ==========================================
-  if (autoGenerateInstructions) {
-    generateSol();
-  } else 
-  {
-    // load manually layouted pages
-    for (int i=0; i<4; i++) {
-      String path = "ZineInstructions-" + nf(i, 2) + ".svg";
-      PShape instPage=loadShape(path);
-      shape(instPage, 0, 0, pdfwidth, pdfheight);
-      pdf.nextPage();
-    }
-  }
 
 
   // ========================================== WHITE PAGES ==========================================
@@ -230,6 +217,23 @@ void draw() {
     }
   }
 
+  // ========================================== INSTRUCTIONS ==========================================
+  if (autoGenerateInstructions) {
+    generateSol();
+  } else 
+  {
+    // load manually layouted pages
+    for (int i=1; i<5; i++) {
+      String path = "ZineInstructions-" + nf(i, 2) + ".svg";
+      println(path);
+      PShape instPage=loadShape(path);
+      shape(instPage, 0, 0, pdfwidth, pdfheight);
+      pdf.nextPage();
+    }
+  }
+
+  // ========================================== LAST PAGE ==========================================
+
   fill(0);
   rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
 
@@ -241,6 +245,9 @@ void draw() {
   text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()) + " with", margin*2, pdfheight-margin*1.5); 
 
   text("https://github.com/iRGBit/ZineMaker", margin*2, pdfheight-margin-3);
+
+
+
 
   // ========================================== BYE ==========================================
 
