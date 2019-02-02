@@ -20,6 +20,10 @@ PFont mono;
 
 PShape coverdesign;
 
+boolean autoGenerateInstructions = true; 
+// if true the script will generate instructio pages from the latest github repo (experimental) 
+// if false the most recent hand-layouted pages will be added (recommended)
+
 
 import processing.pdf.*;
 PGraphicsPDF pdf;
@@ -188,6 +192,14 @@ void draw() {
   }
 
 
+  // ========================================== INSTRUCTIONS ==========================================
+  if (autoGenerateInstructions) {
+    generateSol();
+  } else 
+  {
+    // load manually layouted pages
+  }
+
 
   // ========================================== WHITE PAGES ==========================================
   int add = 4-(pageCounter%4); 
@@ -217,8 +229,9 @@ void draw() {
 
   text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
 
-  text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()), margin*2, pdfheight-margin*2); 
-  text("MYO with https://github.com/iRGBit/ZineMaker", margin*2, pdfheight-margin);
+  text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()) + " with", margin*2, pdfheight-margin*1.5); 
+  
+  text("https://github.com/iRGBit/ZineMaker", margin*2, pdfheight-margin-3);
 
   // ========================================== BYE ==========================================
 
