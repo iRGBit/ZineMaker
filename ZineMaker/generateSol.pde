@@ -5,14 +5,23 @@ PFont inst;
 String[] pages ={"", "", "", ""};
 
 boolean iDebug = false;
+// true: print debug messages to console
+// false: don't print debug messages to console
 
-
+boolean onlineVersion = true; 
+// true: download csv file from github repo (internet connection required)
+// false: use local file
 
 void generateSol() {
   inst = createFont("Courier", 6);
 
-  LeWitt = loadTable("https://raw.githubusercontent.com/physicsdavid/pcd2019/master/coding-challenge/lewitt-instructions/LeWittInstructions.csv", "header");
+  if (onlineVersion) {
+    LeWitt = loadTable("https://raw.githubusercontent.com/physicsdavid/pcd2019/master/coding-challenge/lewitt-instructions/LeWittInstructions.csv", "header");
+  } else {
+        LeWitt = loadTable("lewitt-instructions/LeWittInstructions.csv", "header"); 
 
+  }
+  
   if (iDebug) {
     println(LeWitt.getRowCount() + " instructions in table");
   }
