@@ -69,8 +69,8 @@ void generateSol() {
 
     //println(pages[i]);
     text(pages[i], margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
-    if (i<pages.length-1) {
+   // if (i<pages.length-1) {
       pdf.nextPage();
-    }
+    //}
   }
 }

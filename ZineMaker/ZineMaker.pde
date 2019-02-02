@@ -11,7 +11,7 @@
  ZineMaker for Processing Community Day Wellington/Brisbane/Melbourne 2019
  GNU GENERAL PUBLIC LICENSE v3.0  
  
- // Silkscreen Font by Jason Kottke
+ // Silkscreen Font by Jason Kottke  
  */
 
 import java.io.File;
@@ -23,7 +23,7 @@ PFont mono;
 
 PShape coverdesign;
 
-boolean autoGenerateInstructions = true; 
+boolean autoGenerateInstructions = false; 
 // if true the script will generate instructio pages from the latest github repo (experimental) 
 // if false the most recent hand-layouted pages will be added (recommended)
 
@@ -201,6 +201,12 @@ void draw() {
   } else 
   {
     // load manually layouted pages
+    for (int i=0; i<4; i++) {
+      String path = "ZineInstructions-" + nf(i, 2) + ".svg";
+      PShape instPage=loadShape(path);
+      shape(instPage, 0, 0, pdfwidth, pdfheight);
+      pdf.nextPage();
+    }
   }
 
 
@@ -233,7 +239,7 @@ void draw() {
   text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
 
   text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()) + " with", margin*2, pdfheight-margin*1.5); 
-  
+
   text("https://github.com/iRGBit/ZineMaker", margin*2, pdfheight-margin-3);
 
   // ========================================== BYE ==========================================
