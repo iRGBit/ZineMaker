@@ -10,10 +10,13 @@
  http://irgbit.github.com/ZineMaker  
  ZineMaker for Processing Community Day Wellington/Brisbane/Melbourne 2019
  GNU GENERAL PUBLIC LICENSE v3.0  
+ 
+ // Silkscreen Font by Jason Kottke
  */
 
 import java.io.File;
 
+// Fonts used in the main zine
 PFont Header;
 PFont Txt;
 PFont mono;
