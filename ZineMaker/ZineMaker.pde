@@ -55,13 +55,14 @@ void draw() {
 
   coverdesign = loadShape("zine-cover.svg");
   shape(coverdesign, 0, 0, pdfwidth, pdfheight);
-  fill(0);
-  textSize(222);
+
   textAlign(CENTER);
   textFont(Header);
   pushMatrix();
   translate(pdfwidth/2, pdfheight-margin*2);
   rotate(radians(random(-45, 45)));
+  fill(0);
+  textSize(128);
   text("ZINE", 0, 0);
 
   popMatrix();
@@ -79,7 +80,6 @@ void draw() {
   text("Curated by: Birgit Bachler (Wellington), Melanie Huang (Melbourne), David Harris (Brisbane)", width*.5, height-margin*4, width*.5-margin, margin*5);
   textAlign(LEFT);
 
-  pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
 
@@ -128,9 +128,6 @@ void draw() {
     }
   }
 
-
-
-  pdf = (PGraphicsPDF) g;  // Get the renderer
   pdf.nextPage();
 
 
@@ -170,7 +167,7 @@ void draw() {
           if (img.width >= pdfwidth-margin*2) {
             img.resize(pdfwidth-margin*2, 0);
           }
-          image(img, margin, margin*4);
+          image(img, margin, margin);
         } else if (img.width < img.height) { // portrait
           println("Portrait");
           if (img.width >= pdfwidth-margin*2) {
@@ -185,7 +182,6 @@ void draw() {
           }
           image(img, margin, margin);
         }
-        pdf = (PGraphicsPDF) g;  // Get the renderer
         pdf.nextPage();
       }
     }
@@ -198,7 +194,6 @@ void draw() {
   for (int i=0; i<add; i++) {
     fill(255);
     rect(0, 0, width, height);
-    pdf = (PGraphicsPDF) g;  // Get the renderer
     pdf.nextPage();
   }
   println("Your zine has " + pageCounter + " pages. " + add + " blank pages added for double-sided printing.");
