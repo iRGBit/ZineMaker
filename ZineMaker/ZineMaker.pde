@@ -27,12 +27,16 @@ boolean autoGenerateInstructions = false;
 // if true the script will generate instructio pages from the latest github repo (experimental) 
 // if false the most recent hand-layouted pages will be added (recommended)
 
+boolean onlineInstructions = false;
+
+boolean debug = false;
+
 
 import processing.pdf.*;
 PGraphicsPDF pdf;
 
-int pdfwidth = 600;
-int pdfheight = 800;
+int pdfwidth = 842;
+int pdfheight = 1192;
 int margin = 40;
 
 String[] contributors = {};
@@ -40,7 +44,7 @@ String[] contributors = {};
 
 void setup() 
 {
-  size(600, 800, PDF, "zine.pdf");
+  size(842, 1192, PDF, "zine.pdf");
   background(255);
   Header = createFont("Silkscreen", 32);
   Txt = createFont("Silkscreen", 16);
@@ -74,17 +78,19 @@ void draw() {
 
   popMatrix();
 
-  PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the renderer
+  PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the PDF renderer
   pdf.nextPage();
 
   // ========================================== IMPRESSUM ==========================================
   fill(#FFFFFF);
   rect(0, 0, width, height);
   textAlign(LEFT);
-  textFont(Txt);
+  textFont(mono);
   fill(0);
   //rect(width*.5, height-margin*6, width*.5-margin, margin*5);
-  text("Curated by: Birgit Bachler (Wellington), Melanie Huang (Melbourne), David Harris (Brisbane)", width*.5, height-margin*4, width*.5-margin, margin*5);
+  text("Curated by: Birgit Bachler (Wellington), Melanie Huang (Melbourne), David Harris (Brisbane)\nThanks to: Tristan Bunn, Tim Turnidge, Seth Ellis & Amari Low\nPCDAUS/NZ has been made possible with the support of College of Creative Arts at Massey University Wellington, Queensland College of Art, Griffith University Brisbane\n2019", width*.2, height-margin*4, width*.7-margin, margin*5);
+
+
   textAlign(LEFT);
 
   pdf.nextPage();
@@ -98,7 +104,7 @@ void draw() {
   text("Table of Contents", 20, margin*3);
   textFont(mono);
 
-  boolean newcontributor = false;
+  boolean newcontributor = false; // initialise newcontributor variable 
 
   int stop = margin*4;
   int pageCounter = 4;
@@ -115,21 +121,25 @@ void draw() {
         stop +=18;
         pageCounter+=1;
         if (contributors.length == 0) {
-          newcontributor = true;
+          newcontributor = true; // add contributor from first entry
         } else {
-          for (int j = 0; j<contributors.length; j++) {
-            if (contributors[j].equals(items[1])) {
-              newcontributor = false;
-              // println(items[1] + " is " + contributors[j]);
+          for (int j = 0; j<contributors.length; j++) { // loop through contributor array
+            if (contributors[j].equals(items[1])) { // check if contributor name matches with any name in the array
+              newcontributor = false; // this is not a new contributor
+              if (debug) {
+                println(items[1] + " is " + contributors[j]);
+              }
             } else {
-              newcontributor = true;
-              // println(items[1] + " is not " + contributors[j]);
+              newcontributor = true; // this is a new contributor
+              if (debug) {
+                println(items[1] + " is not " + contributors[j]);
+              }
             }
           }
         }
 
         if (newcontributor==true) {
-          contributors = append(contributors, items[1]);
+          contributors = append(contributors, items[1]); // append new contributor name to array
         }
       }
     }
@@ -139,7 +149,10 @@ void draw() {
 
 
   // ========================================== CONTENT ==========================================
-  println("I will loop " + filenames.length + " times.");
+
+  if (debug) {
+    println("I will loop " + filenames.length + " times.");
+  }
   for (int i = 0; i < filenames.length; i++) {
 
     if ((filenames[i].charAt(0)) != '.') { // check if not dotfile
@@ -149,15 +162,15 @@ void draw() {
       if (img != null) { // check if loaded file is an image
         String filename = filenames[i];
         String[] items = split(filename, "|");
-
-        println("Working on " + items[1] + "'s image which is number " + i);
-
+        if (debug) {
+          println("Working on " + items[1] + "'s image which is number " + i);
+        }
         String name = "Name: " + items[1];
         //String timestamp = "Timestamp: " + items[0];
         String location = "Location: " + items[2];
         String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
         String instruction = items[4];
-        instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.'));
+        instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.')); // remove file name .png from last piece of string (here: instruction)
 
         fill(0);
         textFont(Txt);
@@ -170,20 +183,26 @@ void draw() {
 
 
         if (img.width > img.height) { // landscape
-          println("Landscape");
+          if (debug) {
+            println("Landscape");
+          }
           if (img.width >= pdfwidth-margin*2) {
             img.resize(pdfwidth-margin*2, 0);
           }
           image(img, margin, margin);
         } else if (img.width < img.height) { // portrait
-          println("Portrait");
+          if (debug) {
+            println("Portrait");
+          }
           if (img.width >= pdfwidth-margin*2) {
             img.resize(pdfwidth-margin*2, 0);
           }
 
           image(img, margin, margin);
         } else { // square
-          println("Square");
+          if (debug) {
+            println("Square");
+          }
           if (img.height > pdfheight) {
             img.resize(0, pdfheight-margin*2);
           }
@@ -198,34 +217,33 @@ void draw() {
 
 
   // ========================================== WHITE PAGES ==========================================
-  int add = 4-(pageCounter%4); 
+  int add = 4-(pageCounter%4); // is the current total page count dividable by 4? otherwise add fill pages for double-sided printing
   for (int i=0; i<add; i++) {
     fill(255);
     rect(0, 0, width, height);
     pdf.nextPage();
   }
-  println("Your zine has " + pageCounter + " pages. " + add + " blank pages added for double-sided printing.");
+  println("Your zine has " + pageCounter + " pages. " + add + " blank pages added for easy double-sided printing. :)");
 
-  // LAST PAGE
-  String credits = "With contributions from: ";
-  //println(contributors);
-  for (int c=0; c<contributors.length; c++) {
-    if (c==contributors.length-1) {
-      credits = credits + contributors[c];
-    } else {
-      credits = credits + contributors[c] + " | ";
-    }
-  }
+
 
   // ========================================== INSTRUCTIONS ==========================================
   if (autoGenerateInstructions) {
     generateSol();
   } else 
   {
+    String svgurl;
     // load manually layouted pages
+    if (onlineInstructions) {
+      svgurl = "https://raw.githubusercontent.com/physicsdavid/pcd2019/master/coding-challenge/lewitt-instructions/";
+    } else {
+      svgurl = "";
+    }
     for (int i=1; i<5; i++) {
-      String path = "ZineInstructions-" + nf(i, 2) + ".svg";
-      println(path);
+      String path = svgurl + "ZineInstructions-" + nf(i, 2) + ".svg";
+      if (debug) {
+        println("Adding " + path);
+      }
       PShape instPage=loadShape(path);
       shape(instPage, 0, 0, pdfwidth, pdfheight);
       pdf.nextPage();
@@ -234,6 +252,15 @@ void draw() {
 
   // ========================================== LAST PAGE ==========================================
 
+  String credits = "With contributions from: ";
+
+  for (int c=0; c<contributors.length; c++) {
+    if (c==contributors.length-1) {
+      credits = credits + contributors[c];
+    } else {
+      credits = credits + contributors[c] + " | ";
+    }
+  }
   fill(0);
   rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
 
@@ -251,7 +278,7 @@ void draw() {
 
   // ========================================== BYE ==========================================
 
-  String[] yay = {"Yay!", "Hooray", "Weeeee", "Tau Ke!", "You know what?", "Woo Hoo", "Ka mau te wehi!"};
+  String[] yay = {"Yay!", "Hooray", "Weeeee", "Tau Ke!", "You know what?", "Woo Hoo", "Ka mau te wehi!", "Hip Hip Hooray!", "Good news everyone!"};
   String[] goodbye = {"Bye!", "See ya!", "Laters!", "Haere Ra!", "Over and out"};
 
   println(yay[int(random(yay.length))]);
