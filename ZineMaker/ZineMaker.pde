@@ -88,7 +88,7 @@ void draw() {
   textFont(mono);
   fill(0);
   //rect(width*.5, height-margin*6, width*.5-margin, margin*5);
-  text("Curated by: Birgit Bachler (Wellington), Melanie Huang (Melbourne), David Harris (Brisbane)\nThanks to: Tristan Bunn, Tim Turnidge, Seth Ellis & Amari Low\nPCDAUS/NZ has been made possible with the support of College of Creative Arts at Massey University Wellington, Queensland College of Art, Griffith University Brisbane\n2019", width*.2, height-margin*4, width*.7-margin, margin*5);
+  text("Curated by:\nBirgit Bachler (Wellington), Melanie Huang (Melbourne) & David Harris (Brisbane)\nThanks to:\nTristan Bunn, Tim Turnidge, Seth Ellis, Amari Low & The Processing Foundation\n\nPCDAUS/NZ has been made possible with the support of College of Creative Arts at Massey University Wellington, Queensland College of Art, Griffith University Brisbane\n2019", width*.2, height-margin*4, width*.8-margin, margin*5);
 
 
   textAlign(LEFT);
