@@ -29,7 +29,7 @@ boolean autoGenerateInstructions = false;
 
 boolean onlineInstructions = false;
 
-boolean debug = true;
+boolean debug = false;
 
 
 import processing.pdf.*;
@@ -104,7 +104,6 @@ void draw() {
   text("Table of Contents", 20, margin*3);
   textFont(mono);
 
-  boolean newcontributor = false; // initialise newcontributor variable 
   int authormatch = 0;
   int stop = margin*4;
   int pageCounter = 4;
@@ -122,18 +121,15 @@ void draw() {
         pageCounter+=1;
         if (contributors.length == 0) {
           authormatch = 0; // no matches found
-          newcontributor = true; // add contributor from first entry
         } else {
           authormatch = 0;
           for (int j = 0; j<contributors.length; j++) { // loop through contributor array
             if (contributors[j].equals(items[1])) { // check if contributor name matches with any name in the array
-              newcontributor = false; // this is not a new contributor
               authormatch++;
               if (debug) {
                 println(items[1] + " is " + contributors[j]);
               }
             } else {
-              newcontributor = true; // this is a new contributor
               if (debug) {
                 println(items[1] + " is not " + contributors[j]);
               }
@@ -269,6 +265,7 @@ void draw() {
     }
   }
   fill(210);
+  noStroke();
   rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
 
   fill(0);
