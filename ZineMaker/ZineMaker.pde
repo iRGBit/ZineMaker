@@ -29,7 +29,7 @@ boolean autoGenerateInstructions = false;
 
 boolean onlineInstructions = false;
 
-boolean debug = false;
+boolean debug = true;
 
 
 import processing.pdf.*;
@@ -88,7 +88,7 @@ void draw() {
   textFont(mono);
   fill(0);
   //rect(width*.5, height-margin*6, width*.5-margin, margin*5);
-  text("Curated by:\nBirgit Bachler (Wellington), Melanie Huang (Melbourne) & David Harris (Brisbane)\nThanks to:\nTristan Bunn, Tim Turnidge, Seth Ellis, Amari Low & The Processing Foundation\n\nPCDAUS/NZ has been made possible with the support of College of Creative Arts at Massey University Wellington, Queensland College of Art, Griffith University Brisbane\n2019", width*.2, height-margin*4, width*.8-margin, margin*5);
+  text("Curated by:\nBirgit Bachler (Wellington), Melanie Huang (Melbourne) & David Harris (Brisbane)\nThanks to:\nTristan Bunn, Tim Turnidge, Seth Ellis, Amari Low & The Processing Foundation\n\nPCDAUS/NZ has been made possible with the support of College of Creative Arts at Massey University Wellington, Bar SK, Technecolour, Medialab Melbourne & Queensland College of Art, Griffith University Brisbane\n2019", width*.2, height-margin*5, width*.8-margin, margin*5);
 
 
   textAlign(LEFT);
@@ -105,7 +105,7 @@ void draw() {
   textFont(mono);
 
   boolean newcontributor = false; // initialise newcontributor variable 
-
+  int authormatch = 0;
   int stop = margin*4;
   int pageCounter = 4;
   for (int i = 0; i < filenames.length; i++) {
@@ -121,11 +121,14 @@ void draw() {
         stop +=18;
         pageCounter+=1;
         if (contributors.length == 0) {
+          authormatch = 0; // no matches found
           newcontributor = true; // add contributor from first entry
         } else {
+          authormatch = 0;
           for (int j = 0; j<contributors.length; j++) { // loop through contributor array
             if (contributors[j].equals(items[1])) { // check if contributor name matches with any name in the array
               newcontributor = false; // this is not a new contributor
+              authormatch++;
               if (debug) {
                 println(items[1] + " is " + contributors[j]);
               }
@@ -137,8 +140,8 @@ void draw() {
             }
           }
         }
-
-        if (newcontributor==true) {
+        if (authormatch == 0) {
+          //if (newcontributor==true) {
           contributors = append(contributors, items[1]); // append new contributor name to array
         }
       }
@@ -168,17 +171,10 @@ void draw() {
         String name = "Name: " + items[1];
         //String timestamp = "Timestamp: " + items[0];
         String location = "Location: " + items[2];
-        String url = items[3].replace("-ESCCOLON-", ":").replace("-ESCSLASH-", "/");
+        String url = items[3].replace("ESCCOLON", ":").replace("ESCSLASH", "/");
         String instruction = items[4];
         instruction = "Instruction: " + instruction.substring(0, instruction.lastIndexOf('.')); // remove file name .png from last piece of string (here: instruction)
 
-        fill(0);
-        textFont(Txt);
-        text(name, margin, pdfheight-100);
-        text(location, margin, pdfheight-80);
-        text(instruction, margin, pdfheight-60);
-        textFont(mono);
-        text(url, margin, pdfheight-40);
 
 
 
@@ -194,6 +190,9 @@ void draw() {
           if (debug) {
             println("Portrait");
           }
+          if (img.height > pdfheight-110) {
+            img.resize(0, 800);
+          }
           if (img.width >= pdfwidth-margin*2) {
             img.resize(pdfwidth-margin*2, 0);
           }
@@ -203,11 +202,19 @@ void draw() {
           if (debug) {
             println("Square");
           }
-          if (img.height > pdfheight) {
-            img.resize(0, pdfheight-margin*2);
+          if (img.width > pdfwidth-margin*2) {
+            img.resize(pdfwidth-margin*2, 0);
           }
           image(img, margin, margin);
         }
+        fill(0);
+        textFont(Txt);
+        text(name, margin, pdfheight-100);
+        text(location, margin, pdfheight-80);
+        text(instruction, margin, pdfheight-60);
+        textFont(mono);
+        text(url, margin, pdfheight-40);
+
         pdf.nextPage();
       }
     }
@@ -261,13 +268,15 @@ void draw() {
       credits = credits + contributors[c] + " | ";
     }
   }
-  fill(0);
+  fill(210);
   rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
 
-  fill(255);
-  textFont(Txt);
+  fill(0);
+  textFont(Header);
 
   text(credits, margin*2, margin*2, pdfwidth-margin*4, pdfheight-margin*4);
+
+  textFont(Txt);
 
   text("Zine generated on "+str(day())+"-"+str(month())+"-"+str(year())+"_"+str(hour())+":"+str(minute()) + " with", margin*2, pdfheight-margin*1.5); 
 
