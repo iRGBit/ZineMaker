@@ -116,8 +116,9 @@ void draw() {
         String filename = filenames[i];
         String[] items = split(filename, "|");
         String tocEntry = items[1] +", #" + items[4].substring(0, items[4].lastIndexOf('.')) +"   page "+ pageCounter;
+        textSize(16);
         text(tocEntry, margin, stop);
-        stop +=18;
+        stop +=20;
         pageCounter+=1;
         if (contributors.length == 0) {
           authormatch = 0; // no matches found
@@ -266,7 +267,7 @@ void draw() {
   }
   fill(210);
   noStroke();
-  rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*2);
+  rect(margin, margin, pdfwidth-margin*2, pdfheight-margin*3);
 
   fill(0);
   textFont(Header);
