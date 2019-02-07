@@ -61,6 +61,7 @@ void draw() {
   println(filenames.length + " files in specified directory");
 
   // ========================================== COVER PAGE ==========================================
+  noStroke();
   fill(255); 
   rect(0, 0, width, height);
 
