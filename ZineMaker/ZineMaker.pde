@@ -73,8 +73,8 @@ void draw() {
   pushMatrix();
   translate(pdfwidth/2, pdfheight-margin*2);
   rotate(radians(random(-45, 45)));
-  fill(0);
-  textSize(128);
+  fill(0, 200);
+  textSize(128);  
   text("ZINE", 0, 0);
 
   popMatrix();
@@ -222,11 +222,16 @@ void draw() {
 
 
   // ========================================== WHITE PAGES ==========================================
-  int add = 4-(pageCounter%4); // is the current total page count dividable by 4? otherwise add fill pages for double-sided printing
-  for (int i=0; i<add; i++) {
-    fill(255);
-    rect(0, 0, width, height);
-    pdf.nextPage();
+  int add;
+  if (pageCounter%4 !=0) {
+    add = 4-(pageCounter%4); // is the current total page count dividable by 4? otherwise add fill pages for double-sided printing
+    for (int i=0; i<add; i++) {
+      fill(255);
+      rect(0, 0, width, height);
+      pdf.nextPage();
+    }
+  } else {
+    add = 0;
   }
   println("Your zine has " + pageCounter + " pages. " + add + " blank pages added for easy double-sided printing. :)");
 
